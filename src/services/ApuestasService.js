@@ -22,4 +22,15 @@ export default class ApuestasService {
             });
         })
     }
+
+    deleteApuesta(idApuesta) {
+        return new Promise(function(resolve) {
+            var request = "api/apuestas/" + idApuesta;
+            var url = Global.url + request;
+            axios.delete(url).then(() => {
+                resolve(true);
+            });
+        })
+    }
+    
 }

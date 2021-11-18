@@ -9,6 +9,7 @@
             <th>USUARIO</th>
             <th>RESULTADO</th>
             <th>FECHA</th>
+            <th>ACCIÓN</th>
           </tr>
         </thead>
         <tbody>
@@ -16,6 +17,21 @@
             <td>{{apuesta.usuario}}</td>
             <td>{{apuesta.resultado}}</td>
             <td>{{apuesta.fecha}}</td>
+            <td><button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" v-bind:data-bs-target="'#id' + apuesta.idApuesta">Eliminar</button></td>
+            <div class="modal fade" v-bind:id="'id' + apuesta.idApuesta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro de eliminar esta apuesta?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" v-on:click="eliminarApuesta(apuesta.idApuesta)" data-bs-dismiss="modal" class="btn btn-danger">Eliminar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </tr>
         </tbody>
       </table>
@@ -39,6 +55,13 @@ export default {
     cargarApuestas() {
       service.getApuestas().then(response => {
         this.apuestas = response;
+      });
+    },
+    eliminarApuesta(idApuesta) {
+      service.deleteApuesta(idApuesta).then(result => {
+        if (result) {
+          this.cargarApuestas();
+        }
       });
     }
   },
